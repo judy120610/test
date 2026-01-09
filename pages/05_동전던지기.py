@@ -5,32 +5,42 @@ st.title("🪙 운명의 동전 던지기")
 
 html_code = """
 <style>
-    .coin { width: 150px; height: 150px; position: relative; transform-style: preserve-3d; margin: 50px auto; transition: transform 2s; }
-    .side { position: absolute; width: 100%; height: 100%; border-radius: 50%; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; border: 5px solid #aaa; }
-    .heads { background: #ddd; transform: rotateY(0deg); } /* 앞면 */
-    .tails { background: #bbb; transform: rotateY(180deg); } /* 뒷면 */
-    .coin-img { width: 130px; border-radius: 50%; }
+    .scene { width: 150px; height: 150px; perspective: 1000px; margin: 50px auto; }
+    .coin { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    .side { position: absolute; width: 100%; height: 100%; border-radius: 50%; backface-visibility: hidden; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            border: 6px solid #bdc3c7; box-shadow: inset 0 0 20px rgba(0,0,0,0.2); }
+    .heads { background: linear-gradient(145deg, #e6e6e6, #cfcfcf); color: #2c3e50; }
+    .tails { background: linear-gradient(145deg, #d4d4d4, #b0b0b0); transform: rotateX(180deg); color: #2c3e50; }
+    .coin-val { font-size: 40px; font-weight: bold; }
+    .coin-label { font-size: 14px; }
 </style>
-<div id="coin" class="coin">
-    <div class="side heads">
-        <img src="https://upload.wikimedia.org/wikipedia/ko/c/c7/100_won_coin_obverse.png" class="coin-img">
-    </div>
-    <div class="side tails">
-        <img src="https://upload.wikimedia.org/wikipedia/ko/e/e0/100_won_coin_reverse.png" class="coin-img">
+<div class="scene">
+    <div id="coin" class="coin">
+        <div class="side heads">
+            <div class="coin-val">100</div>
+            <div class="coin-label">한국은행</div>
+        </div>
+        <div class="side tails">
+            <div class="coin-val">👤</div>
+            <div class="coin-label">이순신장군</div>
+        </div>
     </div>
 </div>
 <div style="text-align:center;">
-    <button onclick="flipCoin()" style="padding:10px 20px; font-size:20px;">던지기!</button>
-    <h2 id="coinRes"></h2>
+    <button onclick="flip()" style="padding:15px 40px; background:#FFDAC1; border:none; border-radius:15px; cursor:pointer; font-size:20px;">동전 튕기기!</button>
+    <h2 id="res" style="color:#555; margin-top:30px;"></h2>
 </div>
 <script>
-    function flipCoin() {
+    function flip() {
         const coin = document.getElementById('coin');
         const isHeads = Math.random() < 0.5;
-        const rotate = isHeads ? 1800 : 1980; // 360 * 5 + (0 or 180)
-        coin.style.transform = `rotateY(${rotate}deg)`;
+        // 상하 회전 (rotateX)
+        const rotation = isHeads ? 1440 : 1620; 
+        coin.style.transform = `rotateX(${rotation}deg)`;
+        document.getElementById('res').innerText = "결과는...?";
         setTimeout(() => {
-            document.getElementById('coinRes').innerText = isHeads ? "앞면입니다!" : "뒷면입니다!";
+            document.getElementById('res').innerText = isHeads ? "결과: 앞면 (100)" : "결과: 뒷면 (이순신)";
         }, 2000);
     }
 </script>

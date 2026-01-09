@@ -1,28 +1,25 @@
 import streamlit as st
+import streamlit.components.v1 as components
 import random
 
-st.set_page_config(page_title="두근두근 제비뽑기")
 st.title("🎟️ 두근두근 제비뽑기")
+total = st.number_input("총 개수", 2, 50, 10)
+win = st.number_input("당첨 개수", 1, total-1, 1)
 
-total = st.number_input("총 개수 (최대 50)", min_value=2, max_value=50, value=10)
-win = st.number_input("당첨 개수", min_value=1, max_value=49, value=1)
-
-if win >= total:
-    st.error("당첨 개수는 총 개수보다 적어야 합니다.")
-else:
-    if st.button("뽑기 시작"):
-        items = ["당첨"] * win + ["꽝"] * (total - win)
-        random.shuffle(items)
-        
-        st.write("### 뽑기 결과")
-        cols = st.columns(5)
-        for i, item in enumerate(items):
-            with cols[i % 5]:
-                if item == "당첨":
-                    st.success(f"{i+1}번: 당첨! 🎉")
-                else:
-                    st.info(f"{i+1}번: 꽝")
-        
-        st.balloons()
-        winners = [i+1 for i, v in enumerate(items) if v == "당첨"]
-        st.success(f"당첨 번호: {', '.join(map(str, winners))}")
+if st.button("제비 준비"):
+    items = ["당첨"] * win + ["꽝"] * (total - win)
+    random.shuffle(items)
+    
+    html_code = f"""
+    <style>
+        .box {{ display: flex; flex-wrap: wrap; gap: 10px; }}
+        .paper {{ width: 60px; height: 80px; background: #ffd700; border: 1px solid #b8860b; 
+                  cursor: pointer; display: flex; align-items: center; justify-content: center;
+                  transition: transform 0.5s; font-size: 12px; font-weight: bold; }}
+        .paper.open {{ transform: rotateY(180deg); background: white; }}
+    </style>
+    <div class="box">
+        {" ".join([f'<div class="paper" onclick="this.classList.add(\'open\'); this.innerText=\'{v}\'">?</div>' for v in items])}
+    </div>
+    """
+    components.html(html_code, height=500)

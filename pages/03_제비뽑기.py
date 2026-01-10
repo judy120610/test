@@ -3,7 +3,7 @@ import streamlit.components.v1 as components
 import random
 import json
 
-st.title("🎟️ 자동 제비뽑기 상자")
+st.title("🎟️ 두근두근 제비뽑기")
 st.write("상자에서 제비가 하나씩 뽑혀 나옵니다!")
 
 c1, c2 = st.columns(2)

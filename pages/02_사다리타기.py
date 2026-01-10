@@ -1,3 +1,7 @@
+import streamlit as st
+import streamlit.components.v1 as components
+import random
+import json
 if menu == "🪜 사다리 타기":
     st.title("🪜 즐거운 사다리 타기")
     

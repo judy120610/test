@@ -1,7 +1,7 @@
 import streamlit as st
 import streamlit.components.v1 as components
 
-st.title("🪙 리얼 3D 동전 던지기")
+st.title("🪙 운명의 동전 던지기")
 
 html_code = """
 <style>

@@ -1,7 +1,7 @@
 import streamlit as st
 import streamlit.components.v1 as components
 
-st.title("🎲 정방향 주사위")
+st.title("🎲 굴러가라 주사위")
 
 html_code = """
 <style>

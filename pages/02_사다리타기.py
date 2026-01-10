@@ -2,7 +2,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 import json
 
-st.title("🪜 두근두근 사다리 타기")
+st.title("🪜 신나는 사다리 타기")
 
 col1, col2 = st.columns([1, 3])
 with col1:

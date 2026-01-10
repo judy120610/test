@@ -5,42 +5,56 @@ st.title("🪙 운명의 동전 던지기")
 
 html_code = """
 <style>
-    .scene { width: 150px; height: 150px; perspective: 1000px; margin: 50px auto; }
-    .coin { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 2s cubic-bezier(0.2, 0.8, 0.3, 1.1); }
+    .scene { width: 120px; height: 120px; perspective: 1000px; margin: 80px auto; }
+    .coin { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 1.5s ease-out; }
     .side { position: absolute; width: 100%; height: 100%; border-radius: 50%; backface-visibility: hidden; 
-            display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            border: 4px solid #bdc3c7; box-shadow: inset 0 0 20px rgba(0,0,0,0.1); }
-    .heads { background: linear-gradient(145deg, #e6e6e6, #cfcfcf); color: #2c3e50; transform: translateZ(4px); }
-    .tails { background: linear-gradient(145deg, #d4d4d4, #b0b0b0); transform: rotateY(180deg) translateZ(4px); color: #2c3e50; }
-    /* 두께를 위한 테두리 */
-    .coin::before { content: ''; position: absolute; width: 100%; height: 100%; border-radius: 50%; background: #95a5a6; transform: translateZ(0); }
-    .coin-val { font-size: 40px; font-weight: bold; }
+            display: flex; align-items: center; justify-content: center; font-size: 40px; font-weight: bold;
+            border: 5px solid #d4af37; box-shadow: inset 0 0 15px rgba(0,0,0,0.2); }
+    .heads { background: #ffd700; color: #784a06; transform: translateZ(3px); }
+    .tails { background: #daa520; color: #784a06; transform: rotateX(180deg) translateZ(3px); }
+    /* 동전 던지기 높이 애니메이션 */
+    @keyframes toss {
+        0% { bottom: 0; }
+        50% { bottom: 150px; transform: scale(1.2); }
+        100% { bottom: 0; }
+    }
+    .toss-animation { position: relative; animation: toss 1.5s ease-in-out; }
 </style>
 <div class="scene">
-    <div id="coin" class="coin">
-        <div class="side heads"><div class="coin-val">100</div><div>한국은행</div></div>
-        <div class="side tails"><div class="coin-val">👤</div><div>이순신</div></div>
+    <div id="coin-container">
+        <div id="coin" class="coin">
+            <div class="side heads">앞</div>
+            <div class="side tails">뒤</div>
+        </div>
     </div>
 </div>
 <div style="text-align:center;">
-    <button onclick="flipCoin()" style="padding:15px 40px; background:#FFDAC1; border:none; border-radius:15px; cursor:pointer; font-size:20px; font-weight:bold;">동전 튕기기!</button>
-    <h2 id="resText" style="color:#555; margin-top:30px;">준비...</h2>
+    <button onclick="flip()" style="padding:15px 40px; background:#FFDAC1; border:none; border-radius:15px; cursor:pointer; font-size:20px; font-weight:bold;">동전 던지기!</button>
+    <h2 id="res" style="color:#555; margin-top:30px;">결과는?</h2>
 </div>
+
 <script>
-    let currentRot = 0;
-    function flipCoin() {
+    let currentRotation = 0;
+    function flip() {
         const coin = document.getElementById('coin');
+        const container = document.getElementById('coin-container');
         const isHeads = Math.random() < 0.5;
-        const addRot = isHeads ? 1440 : 1620; 
-        currentRot += addRot;
         
-        coin.style.transform = `rotateY(${currentRot}deg)`;
-        document.getElementById('resText').innerText = "결과는...?";
+        // 애니메이션 초기화 및 재실행
+        container.classList.remove('toss-animation');
+        void container.offsetWidth; // reflow
+        container.classList.add('toss-animation');
         
+        // X축(위아래) 회전 누적
+        const rotateAdd = isHeads ? 1440 : 1620;
+        currentRotation += rotateAdd;
+        coin.style.transform = `rotateX(${currentRotation}deg)`;
+        
+        document.getElementById('res').innerText = "공중에서 회전 중...";
         setTimeout(() => {
-            document.getElementById('resText').innerText = isHeads ? "결과: 앞면 (100)" : "결과: 뒷면 (이순신)";
-        }, 2000);
+            document.getElementById('res').innerText = isHeads ? "결과: 앞면" : "결과: 뒷면";
+        }, 1500);
     }
 </script>
 """
-components.html(html_code, height=500)
+components.html(html_code, height=550)

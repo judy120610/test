@@ -2,7 +2,6 @@ import streamlit as st
 import streamlit.components.v1 as components
 import random
 import json
-
 elif menu == "🎟️ 제비뽑기":
     st.title("🎟️ 두근두근 제비뽑기")
     c1, c2 = st.columns(2)
